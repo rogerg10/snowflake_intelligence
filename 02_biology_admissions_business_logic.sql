@@ -1,4 +1,6 @@
--- Use admin role and correct context
+-- Not suitable for PROD environments. 
+-- Use role and correct context
+-- Consider using a more pertinent role e.g. ENGINEER
 USE ROLE ACCOUNTADMIN;
 USE DATABASE BIOLOGY_ADMISSIONS_DB;
 USE SCHEMA INTAKE_2025_26;
