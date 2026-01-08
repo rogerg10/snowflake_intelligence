@@ -1,0 +1,270 @@
+name: biology_confirmed_applicants
+description: Confirmed applicants and student onboarding model for the Biology 2025–26 cohort, now including financial record tracking.
+tables:
+  - name: CONFIRMED_APPLICANTS
+    base_table:
+      database: BIOLOGY_ADMISSIONS_DB
+      schema: INTAKE_2025_26
+      table: CONFIRMED_APPLICANTS
+    dimensions:
+      - name: STUDENT_ID
+        expr: STUDENT_ID
+        data_type: NUMBER(20,0)
+        sample_values: [1, 2, 3, 10, 20]
+        description: Unique identifier for each confirmed Biology student.
+        synonyms: [student unique id, university_person_id, confirmation_id, system_id, case_id]
+
+      - name: APPLICANT_ID
+        expr: APPLICANT_ID
+        data_type: VARCHAR(20)
+        sample_values: [A2026_001, A2026_002, A2026_005, A2026_007, A2026_009]
+        description: Identifier linking the confirmed student to their original applicant record.
+        synonyms: [application_id, applicant number, admissions_tracking_id, form_id]
+
+      - name: STUDENT_NUMBER
+        expr: STUDENT_NUMBER
+        data_type: VARCHAR(15)
+        sample_values: [B232001, B232006, B232015, B232022, B232045]
+        description: The official university-issued student number.
+        synonyms: [university_id, uni_number, student_no, banner_id, candidate_number]
+
+      - name: FIRST_NAME
+        expr: FIRST_NAME
+        data_type: VARCHAR(100)
+        sample_values: [Alice, George, Laura, Benjamin, Sophia, Mika]
+        description: The student's given first name.
+        synonyms: [given_name, forename, applicant_first]
+
+      - name: LAST_NAME
+        expr: LAST_NAME
+        data_type: VARCHAR(100)
+        sample_values: [Nguyen, Lopez, Karpov, Patel, Johansson, Ito]
+        description: The student's family or surname.
+        synonyms: [family_name, surname, applicant_last]
+
+      - name: PROGRAM_CODE
+        expr: PROGRAM_CODE
+        data_type: VARCHAR(10)
+        sample_values: [BIO101, BIO106, BIO105, BIO210, BIO212]
+        description: Internal code used to identify the assigned biology program.
+        synonyms: [course code, program_id, field_code]
+
+      - name: PROGRAM_NAME
+        expr: PROGRAM_NAME
+        data_type: VARCHAR(200)
+        sample_values: [MSc Biology, MSc Botany, MSc Genetics, MSc Marine Biology, MSc Microbiology, MSc Molecular Ecology]
+        description: Official name of the biology program to which the student has been admitted.
+        synonyms: [degree_name, program title, course_name]
+
+      - name: STUDENT_TYPE
+        expr: STUDENT_TYPE
+        data_type: VARCHAR(20)
+        sample_values: [DOMESTIC, INTERNATIONAL]
+        description: Flag indicating whether the applicant is a domestic or international student.
+        synonyms: [residency_status, citizenship_type]
+
+      - name: ENROLLMENT_STATUS
+        expr: ENROLLMENT_STATUS
+        data_type: VARCHAR(20)
+        sample_values: [CONFIRMED, ENROLLED, WITHDRAWN, DEFERRED]
+        description: Status of the student in the admissions lifecycle.
+        synonyms: [student_status, course_enrollment_status, confirmation_state]
+
+      - name: CAMPUS
+        expr: CAMPUS
+        data_type: VARCHAR(50)
+        sample_values: [Parkville, Carlton, Burnley, Southbank]
+        description: The physical campus or location where the course will take place.
+        synonyms: [study_location, teaching_site, school_campus]
+
+      - name: STUDY_MODE
+        expr: STUDY_MODE
+        data_type: VARCHAR(20)
+        sample_values: [FULL_TIME, PART_TIME, ONLINE]
+        description: Indicates whether the student is full-time, part-time, or online.
+        synonyms: [mode_of_attendance, class_mode, attendance_type]
+
+      - name: CREATED_BY
+        expr: CREATED_BY
+        data_type: VARCHAR(100)
+        sample_values: [admin, system_proc, registrar_office]
+        description: Username or identifier of the agent or process that created the record.
+        synonyms: [entered_by, record_owner, data_entry_user]
+
+    time_dimensions:
+      - name: CONFIRMATION_DATE
+        expr: CONFIRMATION_DATE
+        data_type: DATE
+        sample_values: ['2025-07-30', '2025-08-04', '2025-08-10', '2025-08-15']
+        description: Date the student's place was confirmed.
+        synonyms: [offer_accept_date, confirmation_date, admission_confirmation_date]
+
+      - name: EXPECTED_START_DATE
+        expr: EXPECTED_START_DATE
+        data_type: DATE
+        sample_values: ['2025-08-12', '2025-09-01', '2025-09-05', '2025-09-15']
+        description: Term start date for the student's course.
+        synonyms: [term_start, course_start_date, intake_start]
+
+      - name: CREATED_TIMESTAMP
+        expr: CREATED_TIMESTAMP
+        data_type: TIMESTAMP_NTZ
+        sample_values: ['2025-07-25 09:13:41', '2025-07-29 12:05:22']
+        description: The date and time when the entry was created in the database.
+        synonyms: [record_creation_time, data_entry_timestamp]
+
+    measures:
+      - name: TUITION_AMOUNT
+        expr: TUITION_AMOUNT
+        data_type: DECIMAL(10,2)
+        sample_values: ['38500.00', '42500.00', '41000.50', '39750.25']
+        description: The total tuition fee for the program.
+        synonyms: [tuition_fee, program_cost, total_fees]
+
+      - name: ONBOARDING_STARTED
+        expr: ONBOARDING_STARTED
+        data_type: BOOLEAN
+        sample_values: ['TRUE', 'FALSE']
+        description: Indicates if the onboarding process has started for the student.
+        synonyms: [onboarding_status, onboarding_initiated]
+
+      - name: INVOICING_STARTED
+        expr: INVOICING_STARTED
+        data_type: BOOLEAN
+        sample_values: ['TRUE', 'FALSE']
+        description: Indicates whether the student's invoicing process has begun.
+        synonyms: [invoice_initiated, billing_started]
+
+  - name: FINANCIAL_RECORDS
+    base_table:
+      database: BIOLOGY_ADMISSIONS_DB
+      schema: INTAKE_2025_26
+      table: FINANCIAL_RECORDS
+    dimensions:
+      - name: FINANCIAL_RECORD_ID
+        expr: FINANCIAL_RECORD_ID
+        data_type: VARCHAR(20)
+        sample_values: [FR2011, FR2012, FR2013, FR2014, FR2015]
+        description: Unique identifier for each financial record.
+        synonyms: [finance_id, payment_record_id, invoice_record_id]
+
+      - name: STUDENT_ID
+        expr: STUDENT_ID
+        data_type: NUMBER(20,0)
+        sample_values: [1, 2, 3, 10, 20]
+        description: Unique student identifier linking financial records to confirmed students.
+        synonyms: [student_ref, student_unique_id, student_link]
+
+      - name: RECORD_TYPE
+        expr: RECORD_TYPE
+        data_type: VARCHAR(20)
+        sample_values: [INVOICE]
+        description: Type of financial record (e.g., invoice or payment).
+        synonyms: [transaction_type, entry_class]
+
+      - name: INVOICE_NUMBER
+        expr: INVOICE_NUMBER
+        data_type: VARCHAR(20)
+        sample_values: [INV-2011, INV-2012, INV-2013, INV-2014, INV-2015]
+        description: Invoice identifier generated for each tuition entry.
+        synonyms: [invoice_id, billing_number]
+
+      - name: FROM_NAME
+        expr: FROM_NAME
+        data_type: VARCHAR(200)
+        sample_values: [University Admissions Office]
+        description: Sender or issuer of the financial document.
+        synonyms: [issuer, billed_from, sender_name]
+
+      - name: TO_NAME
+        expr: TO_NAME
+        data_type: VARCHAR(200)
+        sample_values: [Fiona Chow, George Atkins, Hannah Patel, Ibrahim Khan, Julia Roberts]
+        description: Recipient of the invoice.
+        synonyms: [student_name, billed_to, recipient_name]
+
+      - name: ITEM_NAME
+        expr: ITEM_NAME
+        data_type: VARCHAR(200)
+        sample_values: [MSc Molecular Biology Tuition, MSc Genetics Tuition, MSc Ecology Tuition]
+        description: The item or tuition component being invoiced.
+        synonyms: [line_item, fee_description, service_name]
+
+      - name: CURRENCY
+        expr: CURRENCY
+        data_type: VARCHAR(10)
+        sample_values: [AUD]
+        description: Currency used for the transaction.
+        synonyms: [billing_currency, payment_currency]
+
+      - name: PAYMENT_STATUS
+        expr: PAYMENT_STATUS
+        data_type: VARCHAR(20)
+        sample_values: [PENDING]
+        description: Current payment status of the invoice.
+        synonyms: [status, settlement_status, processing_state]
+
+      - name: PAYMENT_METHOD
+        expr: PAYMENT_METHOD
+        data_type: VARCHAR(50)
+        sample_values: [CARD]
+        description: Method used for payment, if completed.
+        synonyms: [payment_channel, transaction_method]
+
+      - name: TERMS
+        expr: TERMS
+        data_type: VARCHAR(50)
+        sample_values: [Net 30]
+        description: Payment terms as stated on the invoice.
+        synonyms: [payment_terms, contract_terms]
+
+    time_dimensions:
+      - name: DUE_DATE
+        expr: DUE_DATE
+        data_type: DATE
+        sample_values: ['2025-11-25', '2025-12-02', '2025-12-09']
+        description: Due date for payment of the invoice.
+        synonyms: [payment_due_date, final_due]
+
+      - name: PAYMENT_DATE
+        expr: PAYMENT_DATE
+        data_type: DATE
+        sample_values: ['2025-11-25', '2025-12-02', '2025-12-09']
+        description: Actual date of payment if completed.
+        synonyms: [settlement_date, paid_date]
+
+      - name: PDF_GENERATED_TIMESTAMP
+        expr: PDF_GENERATED_TIMESTAMP
+        data_type: TIMESTAMP_NTZ
+        sample_values: ['2025-11-25 10:45:12', '2025-12-02 09:32:00']
+        description: Timestamp when the invoice PDF was generated.
+        synonyms: [invoice_generated_time, document_creation_time]
+
+      - name: CREATED_TIMESTAMP
+        expr: CREATED_TIMESTAMP
+        data_type: TIMESTAMP_NTZ
+        sample_values: ['2025-11-25 10:45:12', '2025-12-02 09:32:00']
+        description: Timestamp when the financial record was created.
+        synonyms: [record_creation_time, log_time]
+
+    measures:
+      - name: QUANTITY
+        expr: QUANTITY
+        data_type: INTEGER
+        sample_values: [1]
+        description: Quantity associated with the billed item.
+        synonyms: [item_count, billing_units]
+
+      - name: UNIT_COST
+        expr: UNIT_COST
+        data_type: DECIMAL(10,2)
+        sample_values: ['38500.00', '43000.00', '37000.00']
+        description: Cost per unit of the billed item.
+        synonyms: [unit_price, cost_unit]
+
+      - name: AMOUNT
+        expr: AMOUNT
+        data_type: DECIMAL(10,2)
+        sample_values: ['38500.00', '43000.00', '37000.00']
+        description: Total amount billed on the financial record.
+        synonyms: [total_amount, invoice_total, billed_value]
