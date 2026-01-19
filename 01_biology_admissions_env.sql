@@ -1,4 +1,4 @@
-```sql
+
 -- ============================================================
 -- File: 01_biology_admissions_env.sql
 -- Purpose:
@@ -182,6 +182,4 @@ INSERT INTO BIOLOGY_ADMISSIONS_DB.INTAKE_2025_26.CONFIRMED_APPLICANTS (
 --   - External access integration: invoice_api_integration
 --   - External access integration: plane_api_integration
 --   - Notebook: ADMISSIONS_INTELLIGENCE.DATA."Invoice Generator"
-```
 
-[1](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/images/71277111/8fc9e894-25e1-4ce7-b2f1-c8c63fefb7b3/image.jpg)
