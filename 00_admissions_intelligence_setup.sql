@@ -1,5 +1,7 @@
 -- =====================================================================
 -- All data, names, and values in this script are dummy and for demo use.
+-- This script is intended for prototype and learning scenarios and is not
+-- designed for production use.
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
