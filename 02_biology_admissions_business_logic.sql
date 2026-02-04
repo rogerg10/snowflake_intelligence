@@ -282,4 +282,10 @@ $$
 DECLARE
     plane_result STRING;
 BEGIN
-    SELECT cr
+    SELECT create_plane_work_item(:item_name, :description_html, :priority, :start_date, :target_date) INTO plane_result;
+    UPDATE BIOLOGY_ADMISSIONS_DB.INTAKE_2025_26.CONFIRMED_APPLICANTS
+    SET ONBOARDING_STARTED = TRUE
+    WHERE STUDENT_ID = :student_id;
+    RETURN plane_result;
+END;
+$$;
